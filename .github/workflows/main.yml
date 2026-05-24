@@ -25,10 +25,15 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleApkstoreRelease --no-daemon
 
-      - name: Rename APK
+      - name: Find and Rename APK
         run: |
-          mv presentation/build/outputs/apk/apkstore/release/presentation-apkstore-release.apk \
-             Libremator-${{ github.run_number }}.apk
+          APK_FILE=$(find presentation/build/outputs/apk -name "*apkstore*release*.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            echo "APK not found!"
+            exit 1
+          fi
+          mv "$APK_FILE" Libremator-${{ github.run_number }}.apk
+          echo "APK renamed to Libremator-${{ github.run_number }}.apk"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2

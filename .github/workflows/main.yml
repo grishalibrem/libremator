@@ -1,5 +1,8 @@
 name: Build Patched APK
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ develop ]
@@ -43,5 +46,4 @@ jobs:
           draft: false
           prerelease: false
           files: Libremator-${{ github.run_number }}.apk
-          token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
